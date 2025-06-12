@@ -73,4 +73,4 @@ class RegexBasedRequest {
   String toString() {
     return 'RegexBasedRequest(pattern: $pattern, group: $group)';
   }
-} 
+}

@@ -29,7 +29,8 @@ class ScrapingDemo extends StatefulWidget {
 }
 
 class _ScrapingDemoState extends State<ScrapingDemo> {
-  final _urlController = TextEditingController(text: 'https://httpbin.org/html');
+  final _urlController =
+      TextEditingController(text: 'https://httpbin.org/html');
   final _results = <String>[];
   bool _loading = false;
   String? _error;
@@ -64,11 +65,11 @@ class _ScrapingDemoState extends State<ScrapingDemo> {
 
       // Smart content extraction
       final smartContent = scraper.extractSmartContent();
-      
+
       // Custom extractions
       final headings = scraper.queryAll(tag: 'h1');
       final paragraphs = scraper.queryAll(tag: 'p');
-      
+
       // Format as markdown
       final markdown = scraper.toMarkdown();
       final wordCount = scraper.getWordCount();
@@ -90,7 +91,8 @@ class _ScrapingDemoState extends State<ScrapingDemo> {
           ...headings.take(3).map((h) => '  • $h'),
           '',
           '📄 Paragraphs (${paragraphs.length}):',
-          ...paragraphs.take(2).map((p) => '  • ${p.length > 100 ? "${p.substring(0, 100)}..." : p}'),
+          ...paragraphs.take(2).map(
+              (p) => '  • ${p.length > 100 ? "${p.substring(0, 100)}..." : p}'),
           '',
           '📊 === CONTENT ANALYSIS ===',
           '📖 Word Count: $wordCount',
@@ -191,7 +193,8 @@ class _ScrapingDemoState extends State<ScrapingDemo> {
                                 SizedBox(height: 16),
                                 Text(
                                   '👋 Welcome to Flutter Scrapper!\n\nEnter a URL and tap "Start Scraping" to see the magic ✨',
-                                  style: TextStyle(color: Colors.grey, fontSize: 16),
+                                  style: TextStyle(
+                                      color: Colors.grey, fontSize: 16),
                                   textAlign: TextAlign.center,
                                 ),
                               ],
@@ -201,9 +204,15 @@ class _ScrapingDemoState extends State<ScrapingDemo> {
                             itemCount: _results.length,
                             itemBuilder: (context, index) {
                               final result = _results[index];
-                              if (result.startsWith('===') || result.startsWith('🧠') || result.startsWith('🎯') || result.startsWith('📊') || result.startsWith('📝') || result.startsWith('💾')) {
+                              if (result.startsWith('===') ||
+                                  result.startsWith('🧠') ||
+                                  result.startsWith('🎯') ||
+                                  result.startsWith('📊') ||
+                                  result.startsWith('📝') ||
+                                  result.startsWith('💾')) {
                                 return Padding(
-                                  padding: const EdgeInsets.symmetric(vertical: 8),
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 8),
                                   child: Text(
                                     result,
                                     style: const TextStyle(
@@ -218,7 +227,8 @@ class _ScrapingDemoState extends State<ScrapingDemo> {
                                 return const SizedBox(height: 8);
                               }
                               return Padding(
-                                padding: const EdgeInsets.symmetric(vertical: 2),
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 2),
                                 child: Text(
                                   result,
                                   style: const TextStyle(fontSize: 14),

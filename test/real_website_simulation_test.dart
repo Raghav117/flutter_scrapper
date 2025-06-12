@@ -3,7 +3,6 @@ import 'package:flutter_scrapper/mobile_scraper.dart';
 
 void main() {
   group('Real Website Simulation Tests', () {
-    
     // Test Case 1: News Website (BBC-like structure)
     const newsWebsiteHtml = '''
     <!DOCTYPE html>
@@ -245,19 +244,20 @@ void main() {
       late TestMobileScraper scraper;
 
       setUp(() {
-        scraper = TestMobileScraper('https://example-news.com/ai-healthcare', newsWebsiteHtml);
+        scraper = TestMobileScraper(
+            'https://example-news.com/ai-healthcare', newsWebsiteHtml);
       });
 
       test('should extract all heading levels (H1, H2, H3)', () {
         final h1Tags = scraper.queryAll(tag: 'h1');
         final h2Tags = scraper.queryAll(tag: 'h2');
         final h3Tags = scraper.queryAll(tag: 'h3');
-        
+
         print('\n📰 === NEWS WEBSITE - HEADING EXTRACTION ===');
         print('H1 tags (${h1Tags.length}): ${h1Tags.join(", ")}');
         print('H2 tags (${h2Tags.length}): ${h2Tags.join(", ")}');
         print('H3 tags (${h3Tags.length}): ${h3Tags.join(", ")}');
-        
+
         expect(h1Tags.length, equals(2));
         expect(h2Tags.length, equals(2));
         expect(h3Tags.length, equals(3));
@@ -266,13 +266,15 @@ void main() {
       });
 
       test('should extract contact information using regex', () {
-        final emails = scraper.queryWithRegex(pattern: r'([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})');
-        final phones = scraper.queryWithRegex(pattern: r'(\+1-\d{3}-[A-Z]+-\d{3}|\(\d{3}\)\s?\d{3}-\d{4})');
-        
+        final emails = scraper.queryWithRegex(
+            pattern: r'([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})');
+        final phones = scraper.queryWithRegex(
+            pattern: r'(\+1-\d{3}-[A-Z]+-\d{3}|\(\d{3}\)\s?\d{3}-\d{4})');
+
         print('\n📞 === NEWS WEBSITE - CONTACT EXTRACTION ===');
         print('Emails found: ${emails.join(", ")}');
         print('Phones found: ${phones.join(", ")}');
-        
+
         expect(emails.length, equals(2));
         expect(emails, contains('news@example-news.com'));
         expect(emails, contains('contact@example-news.com'));
@@ -281,18 +283,19 @@ void main() {
 
       test('should perform smart content extraction', () {
         final smartContent = scraper.extractSmartContent();
-        
+
         print('\n🧠 === NEWS WEBSITE - SMART EXTRACTION ===');
         print('Title: "${smartContent.title}"');
         print('Description: "${smartContent.description}"');
         print('Author: "${smartContent.author}"');
         print('Emails: ${smartContent.emails.length}');
         print('OpenGraph Title: "${smartContent.openGraph?.title}"');
-        
+
         expect(smartContent.title, equals('Breaking News - Tech Innovation'));
         expect(smartContent.author, equals('John Reporter'));
         expect(smartContent.emails.length, greaterThanOrEqualTo(2));
-        expect(smartContent.openGraph?.title, equals('Breaking News - Tech Innovation'));
+        expect(smartContent.openGraph?.title,
+            equals('Breaking News - Tech Innovation'));
       });
     });
 
@@ -300,21 +303,23 @@ void main() {
       late TestMobileScraper scraper;
 
       setUp(() {
-        scraper = TestMobileScraper('https://example-store.com/macbook-pro', ecommerceWebsiteHtml);
+        scraper = TestMobileScraper(
+            'https://example-store.com/macbook-pro', ecommerceWebsiteHtml);
       });
 
       test('should extract product information and prices', () {
         final h1Tags = scraper.queryAll(tag: 'h1');
         final h2Tags = scraper.queryAll(tag: 'h2');
         final h3Tags = scraper.queryAll(tag: 'h3');
-        final prices = scraper.queryWithRegex(pattern: r'\$([0-9,]+(?:\.[0-9]{2})?)');
-        
+        final prices =
+            scraper.queryWithRegex(pattern: r'\$([0-9,]+(?:\.[0-9]{2})?)');
+
         print('\n🛒 === E-COMMERCE WEBSITE - PRODUCT EXTRACTION ===');
         print('Product Title (H1): ${h1Tags.join(", ")}');
         print('Sections (H2): ${h2Tags.join(", ")}');
         print('Subsections (H3): ${h3Tags.join(", ")}');
         print('Prices found: ${prices.join(", ")}');
-        
+
         expect(h1Tags, contains('MacBook Pro 16-inch'));
         expect(h2Tags, contains('Product Details'));
         expect(h3Tags, contains('Specifications'));
@@ -323,13 +328,15 @@ void main() {
       });
 
       test('should extract customer reviews using regex', () {
-        final reviews = scraper.queryWithRegex(pattern: r'"([^"]+)"\s*-\s*([A-Z][a-z]+\s+[A-Z][a-z]+)');
-        final customerNames = scraper.queryWithRegex(pattern: r'-\s*([A-Z][a-z]+\s+[A-Z][a-z]+)');
-        
+        final reviews = scraper.queryWithRegex(
+            pattern: r'"([^"]+)"\s*-\s*([A-Z][a-z]+\s+[A-Z][a-z]+)');
+        final customerNames =
+            scraper.queryWithRegex(pattern: r'-\s*([A-Z][a-z]+\s+[A-Z][a-z]+)');
+
         print('\n⭐ === E-COMMERCE WEBSITE - REVIEW EXTRACTION ===');
         print('Reviews found: ${reviews.length}');
         print('Customer names: ${customerNames.join(", ")}');
-        
+
         expect(customerNames.length, equals(2));
         expect(customerNames, contains('Sarah Tech'));
         expect(customerNames, contains('Mike Developer'));
@@ -337,10 +344,10 @@ void main() {
 
       test('should extract product specifications', () {
         final specs = scraper.queryAll(tag: 'li');
-        
+
         print('\n📋 === E-COMMERCE WEBSITE - SPECIFICATIONS ===');
         print('Specifications found: ${specs.join(", ")}');
-        
+
         expect(specs.length, equals(4));
         expect(specs, contains('16-inch Retina Display'));
         expect(specs, contains('Apple M2 Pro Chip'));
@@ -351,19 +358,20 @@ void main() {
       late TestMobileScraper scraper;
 
       setUp(() {
-        scraper = TestMobileScraper('https://example-blog.com/performance-tips', blogWebsiteHtml);
+        scraper = TestMobileScraper(
+            'https://example-blog.com/performance-tips', blogWebsiteHtml);
       });
 
       test('should extract blog structure and content', () {
         final h1Tags = scraper.queryAll(tag: 'h1');
         final h2Tags = scraper.queryAll(tag: 'h2');
         final h3Tags = scraper.queryAll(tag: 'h3');
-        
+
         print('\n📝 === BLOG WEBSITE - CONTENT STRUCTURE ===');
         print('Main Title (H1): ${h1Tags.join(", ")}');
         print('Sections (H2): ${h2Tags.join(", ")}');
         print('Tips (H3): ${h3Tags.join(", ")}');
-        
+
         expect(h1Tags, contains('10 Flutter Tips for Better Performance'));
         expect(h2Tags, contains('Introduction'));
         expect(h2Tags, contains('Advanced Techniques'));
@@ -374,12 +382,12 @@ void main() {
       test('should extract author and publication date', () {
         final smartContent = scraper.extractSmartContent();
         final dates = scraper.queryWithRegex(pattern: r'(\d{4}-\d{2}-\d{2})');
-        
+
         print('\n👤 === BLOG WEBSITE - AUTHOR & DATE ===');
         print('Author: "${smartContent.author}"');
         print('Publication Date: "${smartContent.publishDate}"');
         print('Dates found: ${dates.join(", ")}');
-        
+
         expect(smartContent.author, equals('Flutter Expert'));
         expect(dates.length, greaterThanOrEqualTo(1));
       });
@@ -388,14 +396,14 @@ void main() {
         final markdown = scraper.toMarkdown();
         final wordCount = scraper.getWordCount();
         final readingTime = scraper.estimateReadingTime();
-        
+
         print('\n📄 === BLOG WEBSITE - CONTENT FORMATTING ===');
         print('Markdown length: ${markdown.length} characters');
         print('Word count: $wordCount words');
         print('Reading time: ${readingTime.inMinutes} minutes');
         print('Contains H2 headers: ${markdown.contains('## Introduction')}');
         print('Contains H3 headers: ${markdown.contains('### Tip 1')}');
-        
+
         expect(wordCount, greaterThan(50));
         expect(readingTime.inMinutes, greaterThanOrEqualTo(1));
         expect(markdown, contains('# 10 Flutter Tips'));
@@ -406,19 +414,20 @@ void main() {
       late TestMobileScraper scraper;
 
       setUp(() {
-        scraper = TestMobileScraper('https://example-portfolio.com', portfolioWebsiteHtml);
+        scraper = TestMobileScraper(
+            'https://example-portfolio.com', portfolioWebsiteHtml);
       });
 
       test('should extract portfolio sections and projects', () {
         final h1Tags = scraper.queryAll(tag: 'h1');
         final h2Tags = scraper.queryAll(tag: 'h2');
         final h3Tags = scraper.queryAll(tag: 'h3');
-        
+
         print('\n🎨 === PORTFOLIO WEBSITE - STRUCTURE ===');
         print('Main Titles (H1): ${h1Tags.join(", ")}');
         print('Sections (H2): ${h2Tags.join(", ")}');
         print('Subsections (H3): ${h3Tags.join(", ")}');
-        
+
         expect(h1Tags, contains('John Designer'));
         expect(h2Tags, contains('About Me'));
         expect(h2Tags, contains('Featured Work'));
@@ -427,41 +436,62 @@ void main() {
       });
 
       test('should extract contact information and links', () {
-        final emails = scraper.queryWithRegex(pattern: r'([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})');
-        final phones = scraper.queryWithRegex(pattern: r'(\+1-\d{3}-[A-Z]+-\d|\(\d{3}\)\s?\d{3}-\d{4})');
-        final linkedinUrls = scraper.queryWithRegex(pattern: r'(https://example.com/[^\s]+)');
-        
+        final emails = scraper.queryWithRegex(
+            pattern: r'([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})');
+        final phones = scraper.queryWithRegex(
+            pattern: r'(\+1-\d{3}-[A-Z]+-\d|\(\d{3}\)\s?\d{3}-\d{4})');
+        final linkedinUrls =
+            scraper.queryWithRegex(pattern: r'(https://example.com/[^\s]+)');
+
         print('\n📞 === PORTFOLIO WEBSITE - CONTACT INFO ===');
         print('Emails: ${emails.join(", ")}');
         print('Phones: ${phones.join(", ")}');
         print('LinkedIn: ${linkedinUrls.join(", ")}');
-        
+
         expect(emails, contains('john@example-portfolio.com'));
         expect(linkedinUrls, contains('https://example.com/in/johndesigner'));
       });
 
       test('should extract testimonials using blockquote', () {
         final testimonials = scraper.queryAll(tag: 'blockquote');
-        
+
         print('\n💬 === PORTFOLIO WEBSITE - TESTIMONIALS ===');
         print('Testimonials found: ${testimonials.join(" | ")}');
-        
+
         expect(testimonials.length, equals(2));
-        expect(testimonials.first, contains('John delivered exceptional work!'));
+        expect(
+            testimonials.first, contains('John delivered exceptional work!'));
       });
     });
 
     group('Cross-Website Functionality Comparison', () {
-      test('should demonstrate consistent smart extraction across all websites', () {
+      test('should demonstrate consistent smart extraction across all websites',
+          () {
         final websites = [
-          {'name': 'News', 'scraper': TestMobileScraper('https://example-news.com', newsWebsiteHtml)},
-          {'name': 'E-commerce', 'scraper': TestMobileScraper('https://example-store.com', ecommerceWebsiteHtml)},
-          {'name': 'Blog', 'scraper': TestMobileScraper('https://example-blog.com', blogWebsiteHtml)},
-          {'name': 'Portfolio', 'scraper': TestMobileScraper('https://example-portfolio.com', portfolioWebsiteHtml)},
+          {
+            'name': 'News',
+            'scraper':
+                TestMobileScraper('https://example-news.com', newsWebsiteHtml)
+          },
+          {
+            'name': 'E-commerce',
+            'scraper': TestMobileScraper(
+                'https://example-store.com', ecommerceWebsiteHtml)
+          },
+          {
+            'name': 'Blog',
+            'scraper':
+                TestMobileScraper('https://example-blog.com', blogWebsiteHtml)
+          },
+          {
+            'name': 'Portfolio',
+            'scraper': TestMobileScraper(
+                'https://example-portfolio.com', portfolioWebsiteHtml)
+          },
         ];
 
         print('\n🔄 === CROSS-WEBSITE FUNCTIONALITY COMPARISON ===');
-        
+
         for (final website in websites) {
           final scraper = website['scraper'] as TestMobileScraper;
           final smartContent = scraper.extractSmartContent();
@@ -470,7 +500,7 @@ void main() {
           final h3Count = scraper.queryAll(tag: 'h3').length;
           final emailCount = smartContent.emails.length;
           final wordCount = scraper.getWordCount();
-          
+
           print('\n${website['name']} Website:');
           print('  Title: "${smartContent.title}"');
           print('  H1: $h1Count, H2: $h2Count, H3: $h3Count');
@@ -478,7 +508,7 @@ void main() {
           print('  Word Count: $wordCount');
           print('  Has Author: ${smartContent.author != null}');
           print('  Has OpenGraph: ${smartContent.openGraph != null}');
-          
+
           // Verify each website has consistent extraction
           expect(smartContent.title, isNotNull);
           expect(h1Count, greaterThan(0));
@@ -486,27 +516,36 @@ void main() {
         }
       });
 
-      test('should demonstrate consistent content formatting across websites', () {
+      test('should demonstrate consistent content formatting across websites',
+          () {
         final websites = [
-          {'name': 'News', 'scraper': TestMobileScraper('https://example-news.com', newsWebsiteHtml)},
-          {'name': 'Blog', 'scraper': TestMobileScraper('https://example-blog.com', blogWebsiteHtml)},
+          {
+            'name': 'News',
+            'scraper':
+                TestMobileScraper('https://example-news.com', newsWebsiteHtml)
+          },
+          {
+            'name': 'Blog',
+            'scraper':
+                TestMobileScraper('https://example-blog.com', blogWebsiteHtml)
+          },
         ];
 
         print('\n📝 === CONTENT FORMATTING CONSISTENCY ===');
-        
+
         for (final website in websites) {
           final scraper = website['scraper'] as TestMobileScraper;
           final markdown = scraper.toMarkdown();
           final plainText = scraper.toPlainText();
           final readingTime = scraper.estimateReadingTime();
-          
+
           print('\n${website['name']} Website Formatting:');
           print('  Markdown length: ${markdown.length}');
           print('  Plain text length: ${plainText.length}');
           print('  Reading time: ${readingTime.inMinutes} min');
           print('  Has H1 in markdown: ${markdown.contains('# ')}');
           print('  Has H2 in markdown: ${markdown.contains('## ')}');
-          
+
           expect(markdown.length, greaterThan(0));
           expect(plainText.length, greaterThan(0));
           expect(readingTime.inSeconds, greaterThan(0));
@@ -521,15 +560,15 @@ class TestMobileScraper extends MobileScraper {
   TestMobileScraper(String url, String htmlContent) : super(url: url) {
     _htmlContent = htmlContent;
   }
-  
+
   String? _htmlContent;
-  
+
   @override
   String? get rawHtml => _htmlContent;
-  
+
   @override
   bool get isLoaded => _htmlContent != null;
-  
+
   @override
   List<String> queryAll({
     required String tag,
@@ -539,14 +578,14 @@ class TestMobileScraper extends MobileScraper {
     if (_htmlContent == null) {
       throw ScraperNotInitializedException();
     }
-    
+
     try {
       List<String> results = [];
       String pattern = _buildTagPattern(tag, className: className, id: id);
-      
+
       RegExp regex = RegExp(pattern, caseSensitive: false, dotAll: true);
       Iterable<RegExpMatch> matches = regex.allMatches(_htmlContent!);
-      
+
       for (RegExpMatch match in matches) {
         String? content = match.group(1);
         if (content != null) {
@@ -556,13 +595,14 @@ class TestMobileScraper extends MobileScraper {
           }
         }
       }
-      
+
       return results;
     } catch (e) {
-      throw ParseException('Failed to parse HTML with tag pattern', _htmlContent, e);
+      throw ParseException(
+          'Failed to parse HTML with tag pattern', _htmlContent, e);
     }
   }
-  
+
   @override
   List<String> queryWithRegex({
     required String pattern,
@@ -571,12 +611,12 @@ class TestMobileScraper extends MobileScraper {
     if (_htmlContent == null) {
       throw ScraperNotInitializedException();
     }
-    
+
     try {
       List<String> results = [];
       RegExp regex = RegExp(pattern, caseSensitive: false, dotAll: true);
       Iterable<RegExpMatch> matches = regex.allMatches(_htmlContent!);
-      
+
       for (RegExpMatch match in matches) {
         String? content = match.group(group);
         if (content != null) {
@@ -586,10 +626,11 @@ class TestMobileScraper extends MobileScraper {
           }
         }
       }
-      
+
       return results;
     } catch (e) {
-      throw ParseException('Failed to parse HTML with regex pattern: $pattern', _htmlContent, e);
+      throw ParseException(
+          'Failed to parse HTML with regex pattern: $pattern', _htmlContent, e);
     }
   }
 
@@ -626,28 +667,30 @@ class TestMobileScraper extends MobileScraper {
   @override
   Duration estimateReadingTime({int wordsPerMinute = 200}) {
     final plainText = toPlainText();
-    return ContentFormatter.estimateReadingTime(plainText, wordsPerMinute: wordsPerMinute);
+    return ContentFormatter.estimateReadingTime(plainText,
+        wordsPerMinute: wordsPerMinute);
   }
-  
+
   // Private helper methods
   String _buildTagPattern(String tag, {String? className, String? id}) {
     String attributePattern = '';
-    
+
     if (className != null) {
-      attributePattern += '(?=.*class=["\'](?:[^"\']*\\s)?${RegExp.escape(className)}(?:\\s[^"\']*)?["\'])';
+      attributePattern +=
+          '(?=.*class=["\'](?:[^"\']*\\s)?${RegExp.escape(className)}(?:\\s[^"\']*)?["\'])';
     }
-    
+
     if (id != null) {
       attributePattern += '(?=.*id=["\']${RegExp.escape(id)}["\'])';
     }
-    
+
     return '<${RegExp.escape(tag)}$attributePattern[^>]*>(.*?)<\\/${RegExp.escape(tag)}>';
   }
-  
+
   String _cleanHtmlContent(String content) {
     // Remove HTML tags
     String cleaned = content.replaceAll(RegExp(r'<[^>]*>'), '');
-    
+
     // Decode common HTML entities
     cleaned = cleaned
         .replaceAll('&amp;', '&')
@@ -659,10 +702,10 @@ class TestMobileScraper extends MobileScraper {
         .replaceAll('&copy;', '©')
         .replaceAll('&reg;', '®')
         .replaceAll('&trade;', '™');
-    
+
     // Clean up whitespace
     cleaned = cleaned.replaceAll(RegExp(r'\s+'), ' ').trim();
-    
+
     return cleaned;
   }
-} 
+}

@@ -115,15 +115,15 @@ class ResultsDisplay extends StatelessWidget {
           Text(
             'No scraping performed yet',
             style: Theme.of(context).textTheme.titleMedium?.copyWith(
-              color: Theme.of(context).disabledColor,
-            ),
+                  color: Theme.of(context).disabledColor,
+                ),
           ),
           const SizedBox(height: 8),
           Text(
             'Enter a URL and scraping parameters to get started',
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-              color: Theme.of(context).disabledColor,
-            ),
+                  color: Theme.of(context).disabledColor,
+                ),
             textAlign: TextAlign.center,
           ),
         ],
@@ -145,8 +145,8 @@ class ResultsDisplay extends StatelessWidget {
           Text(
             'Scraping Failed',
             style: Theme.of(context).textTheme.titleMedium?.copyWith(
-              color: Theme.of(context).colorScheme.error,
-            ),
+                  color: Theme.of(context).colorScheme.error,
+                ),
           ),
           const SizedBox(height: 8),
           Container(
@@ -158,8 +158,8 @@ class ResultsDisplay extends StatelessWidget {
             child: Text(
               error,
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                color: Theme.of(context).colorScheme.onErrorContainer,
-              ),
+                    color: Theme.of(context).colorScheme.onErrorContainer,
+                  ),
               textAlign: TextAlign.center,
             ),
           ),
@@ -182,15 +182,15 @@ class ResultsDisplay extends StatelessWidget {
           Text(
             'No Results Found',
             style: Theme.of(context).textTheme.titleMedium?.copyWith(
-              color: Theme.of(context).disabledColor,
-            ),
+                  color: Theme.of(context).disabledColor,
+                ),
           ),
           const SizedBox(height: 8),
           Text(
             'Try adjusting your search parameters',
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-              color: Theme.of(context).disabledColor,
-            ),
+                  color: Theme.of(context).disabledColor,
+                ),
           ),
         ],
       ),
@@ -264,4 +264,4 @@ class ResultsDisplay extends StatelessWidget {
       ),
     );
   }
-} 
+}

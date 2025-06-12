@@ -18,7 +18,8 @@ class ScraperViewModel extends ChangeNotifier {
   List<ScrapeResult> get scrapeHistory => List.unmodifiable(_scrapeHistory);
   ScrapeResult? get currentResult => _currentResult;
   bool get hasError => _errorMessage.isNotEmpty;
-  bool get hasResults => _currentResult?.isSuccess == true && _currentResult!.data.isNotEmpty;
+  bool get hasResults =>
+      _currentResult?.isSuccess == true && _currentResult!.data.isNotEmpty;
 
   /// Performs a web scraping operation based on the provided request
   Future<void> performScrape(ScrapeRequest request) async {
@@ -28,7 +29,7 @@ class ScraperViewModel extends ChangeNotifier {
     try {
       // Create new scraper instance
       _currentScraper = MobileScraper(url: request.url);
-      
+
       // Load HTML content
       await _currentScraper!.load();
 
@@ -66,14 +67,13 @@ class ScraperViewModel extends ChangeNotifier {
 
       _setCurrentResult(result);
       _addToHistory(result);
-
     } catch (e) {
       // Create failure result
       final result = ScrapeResult.failure(
         url: request.url,
         error: e.toString(),
-        type: request.type == ScrapeRequestType.tagBased 
-            ? ScrapeType.tagBased 
+        type: request.type == ScrapeRequestType.tagBased
+            ? ScrapeType.tagBased
             : ScrapeType.regexBased,
       );
 
@@ -156,12 +156,12 @@ class ScraperViewModel extends ChangeNotifier {
 
   void _addToHistory(ScrapeResult result) {
     _scrapeHistory.insert(0, result); // Add to beginning for recent-first order
-    
+
     // Limit history to 50 items to prevent memory issues
     if (_scrapeHistory.length > 50) {
       _scrapeHistory = _scrapeHistory.take(50).toList();
     }
-    
+
     notifyListeners();
   }
 
@@ -170,4 +170,4 @@ class ScraperViewModel extends ChangeNotifier {
     _currentScraper = null;
     super.dispose();
   }
-} 
+}

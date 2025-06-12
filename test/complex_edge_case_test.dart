@@ -3,7 +3,6 @@ import 'package:flutter_scrapper/mobile_scraper.dart';
 
 void main() {
   group('Complex Edge Case Tests with Advanced Regex', () {
-    
     // Complex website with nested structures, malformed HTML, and edge cases
     const complexWebsiteHtml = '''
     <!DOCTYPE html>
@@ -251,37 +250,41 @@ void main() {
       late TestMobileScraper scraper;
 
       setUp(() {
-        scraper = TestMobileScraper('https://advancedtech.com', complexWebsiteHtml);
+        scraper =
+            TestMobileScraper('https://advancedtech.com', complexWebsiteHtml);
       });
 
-      test('should extract complex pricing information using advanced regex', () {
+      test('should extract complex pricing information using advanced regex',
+          () {
         // Complex regex for various price formats
         final pricePatterns = [
-          r'\$([0-9,]+(?:\.[0-9]{2})?)\s*(?:/month|/year)?',  // Standard prices (fixed escaping)
+          r'\$([0-9,]+(?:\.[0-9]{2})?)\s*(?:/month|/year)?', // Standard prices (fixed escaping)
           r'\$([0-9,]+(?:\.[0-9]{2})?)\s*-\s*\$([0-9,]+(?:\.[0-9]{2})?)', // Price ranges (fixed escaping)
           r'([0-9,]+(?:\.[0-9]{2})?)\s*million', // Million dollar amounts
           r'ROI\s+of\s+([0-9]+)%', // ROI percentages
           r'([0-9]+(?:\.[0-9]+)?)%\s+accuracy', // Accuracy percentages
         ];
-        
+
         print('\n💰 === ADVANCED PRICING EXTRACTION ===');
-        
+
         for (int i = 0; i < pricePatterns.length; i++) {
           final matches = scraper.queryWithRegex(pattern: pricePatterns[i]);
           print('Pattern ${i + 1} matches: ${matches.join(", ")}');
-          expect(matches.length, greaterThan(0), reason: 'Pattern ${i + 1} should find matches');
+          expect(matches.length, greaterThan(0),
+              reason: 'Pattern ${i + 1} should find matches');
         }
-        
+
         // Test complex price range extraction
         final priceRanges = scraper.queryWithRegex(
-          pattern: r'\$([0-9,]+(?:\.[0-9]{2})?)\s*-\s*\$([0-9,]+(?:\.[0-9]{2})?)',
-          group: 0
-        );
+            pattern:
+                r'\$([0-9,]+(?:\.[0-9]{2})?)\s*-\s*\$([0-9,]+(?:\.[0-9]{2})?)',
+            group: 0);
         print('Price ranges found: ${priceRanges.join(", ")}');
         expect(priceRanges.length, greaterThanOrEqualTo(2));
       });
 
-      test('should extract complex contact information with multiple formats', () {
+      test('should extract complex contact information with multiple formats',
+          () {
         // Advanced phone number patterns
         final phonePatterns = [
           r'\+1-([0-9]{3})-([A-Z-]+)', // Vanity numbers like +1-555-TECH-CEO
@@ -289,25 +292,24 @@ void main() {
           r'\(([0-9]{3})\)\s*([0-9]{3})-([0-9]{4})', // (415) 123-4567 format
           r'([0-9]{3})-([0-9]{3})-([0-9]{4})', // 800-438-8324 format
         ];
-        
+
         print('\n📞 === COMPLEX CONTACT EXTRACTION ===');
-        
+
         for (int i = 0; i < phonePatterns.length; i++) {
-          final phones = scraper.queryWithRegex(pattern: phonePatterns[i], group: 0);
+          final phones =
+              scraper.queryWithRegex(pattern: phonePatterns[i], group: 0);
           print('Phone pattern ${i + 1}: ${phones.join(", ")}');
         }
-        
+
         // Extract email addresses with complex domains
         final emails = scraper.queryWithRegex(
-          pattern: r'([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})'
-        );
+            pattern: r'([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})');
         print('Emails found: ${emails.join(", ")}');
         expect(emails.length, greaterThanOrEqualTo(5));
-        
+
         // Extract LinkedIn profiles
         final linkedinProfiles = scraper.queryWithRegex(
-          pattern: r'linkedin\.com/(?:in|company)/([a-zA-Z0-9-]+)'
-        );
+            pattern: r'linkedin\.com/(?:in|company)/([a-zA-Z0-9-]+)');
         print('LinkedIn profiles: ${linkedinProfiles.join(", ")}');
         expect(linkedinProfiles.length, greaterThanOrEqualTo(3));
       });
@@ -315,22 +317,21 @@ void main() {
       test('should extract cryptocurrency and financial data', () {
         // Crypto price pattern
         final cryptoPrices = scraper.queryWithRegex(
-          pattern: r'([A-Z]{3,4}):\s*\$([0-9,]+(?:\.[0-9]{2,8})?)'
-        );
+            pattern: r'([A-Z]{3,4}):\s*\$([0-9,]+(?:\.[0-9]{2,8})?)');
         print('\n💎 === CRYPTOCURRENCY EXTRACTION ===');
         print('Crypto prices: ${cryptoPrices.join(", ")}');
         expect(cryptoPrices.length, greaterThanOrEqualTo(3));
-        
+
         // Financial metrics
         final financialMetrics = scraper.queryWithRegex(
-          pattern: r'(TVL|ROI|revenue)\s+of\s+\$?([0-9,]+(?:\.[0-9]+)?[MBK]?)'
-        );
+            pattern:
+                r'(TVL|ROI|revenue)\s+of\s+\$?([0-9,]+(?:\.[0-9]+)?[MBK]?)');
         print('Financial metrics: ${financialMetrics.join(", ")}');
-        
+
         // Project values
         final projectValues = scraper.queryWithRegex(
-          pattern: r'\$([0-9,]+(?:\.[0-9]+)?[MBK]?)\s+(?:project|implementation|grant)'
-        );
+            pattern:
+                r'\$([0-9,]+(?:\.[0-9]+)?[MBK]?)\s+(?:project|implementation|grant)');
         print('Project values: ${projectValues.join(", ")}');
         expect(projectValues.length, greaterThanOrEqualTo(3));
       });
@@ -338,22 +339,20 @@ void main() {
       test('should extract team member information with complex patterns', () {
         // Extract names with titles and credentials
         final teamMembers = scraper.queryWithRegex(
-          pattern: r'(Dr\.|PhD|MS|MD)\s+([A-Z][a-z]+(?:\s+[A-Z][a-z-]+)*)'
-        );
+            pattern: r'(Dr\.|PhD|MS|MD)\s+([A-Z][a-z]+(?:\s+[A-Z][a-z-]+)*)');
         print('\n👥 === TEAM MEMBER EXTRACTION ===');
         print('Team members with credentials: ${teamMembers.join(", ")}');
-        
+
         // Extract job titles
         final jobTitles = scraper.queryWithRegex(
-          pattern: r'(CEO|CTO|CFO|Chief\s+[A-Z][a-z]+\s+[A-Z][a-z]+)'
-        );
+            pattern: r'(CEO|CTO|CFO|Chief\s+[A-Z][a-z]+\s+[A-Z][a-z]+)');
         print('Job titles: ${jobTitles.join(", ")}');
         expect(jobTitles.length, greaterThanOrEqualTo(2));
-        
+
         // Extract educational background
         final education = scraper.queryWithRegex(
-          pattern: r'(PhD|MS|MD)\s+in\s+([A-Z][a-z\s&]+)\s+\(([A-Z][a-z]+)\)'
-        );
+            pattern:
+                r'(PhD|MS|MD)\s+in\s+([A-Z][a-z\s&]+)\s+\(([A-Z][a-z]+)\)');
         print('Education background: ${education.join(", ")}');
         expect(education.length, greaterThanOrEqualTo(1));
       });
@@ -362,13 +361,13 @@ void main() {
         // Test extraction from malformed section
         final malformedContent = scraper.queryAll(tag: 'p');
         print('\n⚠️ === MALFORMED HTML HANDLING ===');
-        print('Paragraphs extracted despite malformed HTML: ${malformedContent.length}');
+        print(
+            'Paragraphs extracted despite malformed HTML: ${malformedContent.length}');
         expect(malformedContent.length, greaterThan(10));
-        
+
         // Test special character handling
         final specialChars = scraper.queryWithRegex(
-          pattern: r'(&[a-z]+;|&#[0-9]+;|[🚀🤖💰📊🔗⚡🌟💡∑∆π∞≈≠≤≥])'
-        );
+            pattern: r'(&[a-z]+;|&#[0-9]+;|[🚀🤖💰📊🔗⚡🌟💡∑∆π∞≈≠≤≥])');
         print('Special characters found: ${specialChars.join(", ")}');
         expect(specialChars.length, greaterThan(5));
       });
@@ -378,43 +377,45 @@ void main() {
       late TestMobileScraper scraper;
 
       setUp(() {
-        scraper = TestMobileScraper('https://advancedtech.com', complexWebsiteHtml);
+        scraper =
+            TestMobileScraper('https://advancedtech.com', complexWebsiteHtml);
       });
 
       test('should extract titles using multiple automated methods', () {
         print('\n🎯 === AUTOMATED TITLE EXTRACTION METHODS ===');
-        
+
         // Method 1: Smart Content Extraction
         final smartContent = scraper.extractSmartContent();
         print('Smart extraction title: "${smartContent.title}"');
         expect(smartContent.title, isNotNull);
-        
+
         // Method 2: OpenGraph title
         print('OpenGraph title: "${smartContent.openGraph?.title}"');
         expect(smartContent.openGraph?.title, isNotNull);
-        
+
         // Method 3: All H1 tags
         final h1Tags = scraper.queryAll(tag: 'h1');
         print('H1 tags found: ${h1Tags.join(" | ")}');
         expect(h1Tags.length, greaterThanOrEqualTo(2));
-        
+
         // Method 4: Title tag extraction
         final titleTags = scraper.queryAll(tag: 'title');
-        print('Title tag: "${titleTags.isNotEmpty ? titleTags.first : "Not found"}"');
+        print(
+            'Title tag: "${titleTags.isNotEmpty ? titleTags.first : "Not found"}"');
         expect(titleTags.length, equals(1));
-        
+
         // Method 5: Meta title extraction
         final metaTitles = scraper.queryWithRegex(
-          pattern: r'<meta[^>]*property=[\x22\x27]og:title[\x22\x27][^>]*content=[\x22\x27]([^\x22\x27]*)[\x22\x27]'
-        );
+            pattern:
+                r'<meta[^>]*property=[\x22\x27]og:title[\x22\x27][^>]*content=[\x22\x27]([^\x22\x27]*)[\x22\x27]');
         print('Meta OG titles: ${metaTitles.join(", ")}');
-        
+
         // Method 6: Twitter card title
         final twitterTitles = scraper.queryWithRegex(
-          pattern: r'<meta[^>]*name=[\x22\x27]twitter:title[\x22\x27][^>]*content=[\x22\x27]([^\x22\x27]*)[\x22\x27]'
-        );
+            pattern:
+                r'<meta[^>]*name=[\x22\x27]twitter:title[\x22\x27][^>]*content=[\x22\x27]([^\x22\x27]*)[\x22\x27]');
         print('Twitter card titles: ${twitterTitles.join(", ")}');
-        
+
         // Verify all methods found titles
         expect(smartContent.title, contains('Tech'));
         expect(h1Tags.first, contains('Advanced Tech'));
@@ -425,23 +426,26 @@ void main() {
         final h2Tags = scraper.queryAll(tag: 'h2');
         final h3Tags = scraper.queryAll(tag: 'h3');
         final h4Tags = scraper.queryAll(tag: 'h4');
-        
+
         print('\n📋 === HEADING HIERARCHY ANALYSIS ===');
         print('H1 tags (${h1Tags.length}): ${h1Tags.join(" | ")}');
         print('H2 tags (${h2Tags.length}): ${h2Tags.join(" | ")}');
         print('H3 tags (${h3Tags.length}): ${h3Tags.join(" | ")}');
         print('H4 tags (${h4Tags.length}): ${h4Tags.join(" | ")}');
-        
+
         // Verify complex hierarchy
         expect(h1Tags.length, greaterThanOrEqualTo(2));
         expect(h2Tags.length, greaterThanOrEqualTo(4));
         expect(h3Tags.length, greaterThanOrEqualTo(6));
         expect(h4Tags.length, greaterThanOrEqualTo(2));
-        
+
         // Test emoji handling in headings
-        final emojiHeadings = h2Tags.where((heading) => 
-          heading.contains('🤖') || heading.contains('🔗') || heading.contains('📊')
-        ).toList();
+        final emojiHeadings = h2Tags
+            .where((heading) =>
+                heading.contains('🤖') ||
+                heading.contains('🔗') ||
+                heading.contains('📊'))
+            .toList();
         print('Headings with emojis: ${emojiHeadings.join(" | ")}');
         expect(emojiHeadings.length, greaterThanOrEqualTo(2));
       });
@@ -449,13 +453,15 @@ void main() {
 
     group('Error Generation and Edge Case Tests', () {
       test('should handle extremely long regex patterns without crashing', () {
-        final scraper = TestMobileScraper('https://test.com', complexWebsiteHtml);
-        
+        final scraper =
+            TestMobileScraper('https://test.com', complexWebsiteHtml);
+
         // Extremely complex regex that might cause performance issues
-        final complexPattern = r'(?:(?:[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})|(?:\+1-[0-9]{3}-[A-Z-]+)|(?:\$[0-9,]+(?:\.[0-9]{2})?)|(?:[0-9]+(?:\.[0-9]+)?%)|(?:CEO|CTO|CFO)|(?:PhD|MS|MD)|(?:🚀|🤖|💰|📊|🔗))';
-        
+        final complexPattern =
+            r'(?:(?:[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})|(?:\+1-[0-9]{3}-[A-Z-]+)|(?:\$[0-9,]+(?:\.[0-9]{2})?)|(?:[0-9]+(?:\.[0-9]+)?%)|(?:CEO|CTO|CFO)|(?:PhD|MS|MD)|(?:🚀|🤖|💰|📊|🔗))';
+
         print('\n🔥 === STRESS TEST WITH COMPLEX REGEX ===');
-        
+
         expect(() {
           final results = scraper.queryWithRegex(pattern: complexPattern);
           print('Complex pattern matches: ${results.length}');
@@ -464,10 +470,11 @@ void main() {
       });
 
       test('should handle invalid regex patterns gracefully', () {
-        final scraper = TestMobileScraper('https://test.com', complexWebsiteHtml);
-        
+        final scraper =
+            TestMobileScraper('https://test.com', complexWebsiteHtml);
+
         print('\n❌ === INVALID REGEX HANDLING ===');
-        
+
         // Test with invalid regex patterns that should cause errors
         final invalidPatterns = [
           r'[unclosed bracket',
@@ -475,7 +482,7 @@ void main() {
           r'(?invalid group',
           r'\k<invalid_reference>',
         ];
-        
+
         for (final pattern in invalidPatterns) {
           expect(() {
             scraper.queryWithRegex(pattern: pattern);
@@ -486,15 +493,16 @@ void main() {
 
       test('should handle empty and null content gracefully', () {
         print('\n🚫 === EMPTY CONTENT HANDLING ===');
-        
+
         // Test with empty HTML
         final emptyScraper = TestMobileScraper('https://empty.com', '');
         expect(() {
           emptyScraper.queryAll(tag: 'h1');
         }, throwsA(isA<ScraperNotInitializedException>()));
-        
+
         // Test with minimal HTML
-        final minimalScraper = TestMobileScraper('https://minimal.com', '<html><body></body></html>');
+        final minimalScraper = TestMobileScraper(
+            'https://minimal.com', '<html><body></body></html>');
         final results = minimalScraper.queryAll(tag: 'h1');
         expect(results, isEmpty);
         print('✓ Empty results handled gracefully');
@@ -509,39 +517,45 @@ void main() {
         </div></div></div></div></div></div></div></div></div></div>
         </body></html>
         ''';
-        
-        final nestedScraper = TestMobileScraper('https://nested.com', deeplyNestedHtml);
-        
+
+        final nestedScraper =
+            TestMobileScraper('https://nested.com', deeplyNestedHtml);
+
         print('\n🏗️ === DEEPLY NESTED STRUCTURE TEST ===');
-        
+
         final h1Results = nestedScraper.queryAll(tag: 'h1');
         final pResults = nestedScraper.queryAll(tag: 'p');
-        
+
         print('H1 from nested structure: ${h1Results.join(", ")}');
         print('P from nested structure: ${pResults.join(", ")}');
-        
+
         expect(h1Results.length, equals(1));
         expect(h1Results.first, equals('Deeply Nested Title'));
         expect(pResults.length, equals(1));
       });
 
-      test('should extract content with maximum complexity and verify consistency', () {
-        final scraper = TestMobileScraper('https://complex.com', complexWebsiteHtml);
-        
+      test(
+          'should extract content with maximum complexity and verify consistency',
+          () {
+        final scraper =
+            TestMobileScraper('https://complex.com', complexWebsiteHtml);
+
         print('\n🎯 === MAXIMUM COMPLEXITY TEST ===');
-        
+
         // Run all extraction methods simultaneously
         final smartContent = scraper.extractSmartContent();
         final allH1 = scraper.queryAll(tag: 'h1');
         final allH2 = scraper.queryAll(tag: 'h2');
         final allH3 = scraper.queryAll(tag: 'h3');
-        final allEmails = scraper.queryWithRegex(pattern: r'([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})');
-        final allPrices = scraper.queryWithRegex(pattern: r'\$([0-9,]+(?:\.[0-9]{2})?)');
+        final allEmails = scraper.queryWithRegex(
+            pattern: r'([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})');
+        final allPrices =
+            scraper.queryWithRegex(pattern: r'\$([0-9,]+(?:\.[0-9]{2})?)');
         final markdown = scraper.toMarkdown();
         final plainText = scraper.toPlainText();
         final wordCount = scraper.getWordCount();
         final readingTime = scraper.estimateReadingTime();
-        
+
         print('📊 COMPREHENSIVE EXTRACTION RESULTS:');
         print('  Smart title: "${smartContent.title}"');
         print('  H1 count: ${allH1.length}');
@@ -555,7 +569,7 @@ void main() {
         print('  Plain text length: ${plainText.length} chars');
         print('  Author: "${smartContent.author}"');
         print('  OpenGraph data: ${smartContent.openGraph != null}');
-        
+
         // Verify all extractions are consistent and working
         expect(smartContent.title, isNotNull);
         expect(allH1.length, greaterThanOrEqualTo(2));
@@ -569,7 +583,7 @@ void main() {
         expect(plainText.length, greaterThan(1000));
         expect(smartContent.author, equals('Dr. Sarah Johnson-Smith, PhD'));
         expect(smartContent.openGraph, isNotNull);
-        
+
         print('\n✅ ALL COMPLEX EXTRACTIONS SUCCESSFUL!');
       });
     });
@@ -581,15 +595,15 @@ class TestMobileScraper extends MobileScraper {
   TestMobileScraper(String url, String htmlContent) : super(url: url) {
     _htmlContent = htmlContent;
   }
-  
+
   String? _htmlContent;
-  
+
   @override
   String? get rawHtml => _htmlContent;
-  
+
   @override
   bool get isLoaded => _htmlContent != null;
-  
+
   @override
   List<String> queryAll({
     required String tag,
@@ -599,14 +613,14 @@ class TestMobileScraper extends MobileScraper {
     if (_htmlContent == null) {
       throw ScraperNotInitializedException();
     }
-    
+
     try {
       List<String> results = [];
       String pattern = _buildTagPattern(tag, className: className, id: id);
-      
+
       RegExp regex = RegExp(pattern, caseSensitive: false, dotAll: true);
       Iterable<RegExpMatch> matches = regex.allMatches(_htmlContent!);
-      
+
       for (RegExpMatch match in matches) {
         String? content = match.group(1);
         if (content != null) {
@@ -616,13 +630,14 @@ class TestMobileScraper extends MobileScraper {
           }
         }
       }
-      
+
       return results;
     } catch (e) {
-      throw ParseException('Failed to parse HTML with tag pattern', _htmlContent, e);
+      throw ParseException(
+          'Failed to parse HTML with tag pattern', _htmlContent, e);
     }
   }
-  
+
   @override
   List<String> queryWithRegex({
     required String pattern,
@@ -631,12 +646,12 @@ class TestMobileScraper extends MobileScraper {
     if (_htmlContent == null) {
       throw ScraperNotInitializedException();
     }
-    
+
     try {
       List<String> results = [];
       RegExp regex = RegExp(pattern, caseSensitive: false, dotAll: true);
       Iterable<RegExpMatch> matches = regex.allMatches(_htmlContent!);
-      
+
       for (RegExpMatch match in matches) {
         String? content = match.group(group);
         if (content != null) {
@@ -646,10 +661,11 @@ class TestMobileScraper extends MobileScraper {
           }
         }
       }
-      
+
       return results;
     } catch (e) {
-      throw ParseException('Failed to parse HTML with regex pattern: $pattern', _htmlContent, e);
+      throw ParseException(
+          'Failed to parse HTML with regex pattern: $pattern', _htmlContent, e);
     }
   }
 
@@ -686,28 +702,30 @@ class TestMobileScraper extends MobileScraper {
   @override
   Duration estimateReadingTime({int wordsPerMinute = 200}) {
     final plainText = toPlainText();
-    return ContentFormatter.estimateReadingTime(plainText, wordsPerMinute: wordsPerMinute);
+    return ContentFormatter.estimateReadingTime(plainText,
+        wordsPerMinute: wordsPerMinute);
   }
-  
+
   // Private helper methods
   String _buildTagPattern(String tag, {String? className, String? id}) {
     String attributePattern = '';
-    
+
     if (className != null) {
-      attributePattern += '(?=.*class=["\'](?:[^"\']*\\s)?${RegExp.escape(className)}(?:\\s[^"\']*)?["\'])';
+      attributePattern +=
+          '(?=.*class=["\'](?:[^"\']*\\s)?${RegExp.escape(className)}(?:\\s[^"\']*)?["\'])';
     }
-    
+
     if (id != null) {
       attributePattern += '(?=.*id=["\']${RegExp.escape(id)}["\'])';
     }
-    
+
     return '<${RegExp.escape(tag)}$attributePattern[^>]*>(.*?)<\\/${RegExp.escape(tag)}>';
   }
-  
+
   String _cleanHtmlContent(String content) {
     // Remove HTML tags
     String cleaned = content.replaceAll(RegExp(r'<[^>]*>'), '');
-    
+
     // Decode common HTML entities
     cleaned = cleaned
         .replaceAll('&amp;', '&')
@@ -719,10 +737,10 @@ class TestMobileScraper extends MobileScraper {
         .replaceAll('&copy;', '©')
         .replaceAll('&reg;', '®')
         .replaceAll('&trade;', '™');
-    
+
     // Clean up whitespace
     cleaned = cleaned.replaceAll(RegExp(r'\s+'), ' ').trim();
-    
+
     return cleaned;
   }
-} 
+}

@@ -66,4 +66,4 @@ extension ScrapeTypeExtension on ScrapeType {
         return 'Regex-based';
     }
   }
-} 
+}

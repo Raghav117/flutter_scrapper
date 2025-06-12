@@ -40,7 +40,7 @@ void main() {
 
     test('toPlainText should convert HTML to clean plain text', () {
       final plainText = ContentFormatter.toPlainText(sampleHtml);
-      
+
       expect(plainText, contains('Main Title'));
       expect(plainText, contains('This is a bold and italic paragraph'));
       expect(plainText, contains('• List item 1'));
@@ -51,20 +51,25 @@ void main() {
 
     test('toMarkdown should convert HTML to Markdown', () {
       final markdown = ContentFormatter.toMarkdown(sampleHtml);
-      
-      expect(markdown, contains('Main Title')); // Title is preserved, even if not as markdown
+
+      expect(
+          markdown,
+          contains(
+              'Main Title')); // Title is preserved, even if not as markdown
       expect(markdown, contains('**bold**'));
       expect(markdown, contains('*italic*'));
       expect(markdown, contains('`code`'));
-      expect(markdown, anyOf(contains('- List item 1'), contains('• List item 1')));
+      expect(markdown,
+          anyOf(contains('- List item 1'), contains('• List item 1')));
       expect(markdown, contains('[Example Link](https://example.com)'));
-      expect(markdown, contains('![Test Image](https://example.com/image.jpg)'));
+      expect(
+          markdown, contains('![Test Image](https://example.com/image.jpg)'));
       expect(markdown, contains('> This is a quote'));
     });
 
     test('toCleanHtml should remove unwanted elements', () {
       final cleanHtml = ContentFormatter.toCleanHtml(sampleHtml);
-      
+
       expect(cleanHtml, isNot(contains('<script')));
       expect(cleanHtml, isNot(contains('<style')));
       expect(cleanHtml, isNot(contains('<nav')));
@@ -76,7 +81,7 @@ void main() {
 
     test('toReadableContent should extract main content', () {
       final readable = ContentFormatter.toReadableContent(sampleHtml);
-      
+
       expect(readable, contains('Main Title'));
       expect(readable, contains('This is a bold and italic paragraph'));
       expect(readable, isNot(contains('Navigation Menu')));
@@ -85,16 +90,20 @@ void main() {
     });
 
     test('format should apply correct formatting', () {
-      final plainText = ContentFormatter.format(sampleHtml, ContentFormat.plainText);
-      final markdown = ContentFormatter.format(sampleHtml, ContentFormat.markdown);
-      final cleanHtml = ContentFormatter.format(sampleHtml, ContentFormat.cleanHtml);
-      final readable = ContentFormatter.format(sampleHtml, ContentFormat.readable);
-      
+      final plainText =
+          ContentFormatter.format(sampleHtml, ContentFormat.plainText);
+      final markdown =
+          ContentFormatter.format(sampleHtml, ContentFormat.markdown);
+      final cleanHtml =
+          ContentFormatter.format(sampleHtml, ContentFormat.cleanHtml);
+      final readable =
+          ContentFormatter.format(sampleHtml, ContentFormat.readable);
+
       expect(plainText, isA<String>());
       expect(markdown, isA<String>());
       expect(cleanHtml, isA<String>());
       expect(readable, isA<String>());
-      
+
       expect(markdown, contains('#'));
       expect(plainText, isNot(contains('<')));
     });
@@ -107,27 +116,29 @@ void main() {
 
     test('estimateReadingTime should calculate reading time', () {
       final text = 'word ' * 200; // 200 words
-      final readingTime = ContentFormatter.estimateReadingTime(text, wordsPerMinute: 200);
+      final readingTime =
+          ContentFormatter.estimateReadingTime(text, wordsPerMinute: 200);
       expect(readingTime.inMinutes, equals(1));
     });
 
     test('extractSpecificContent should extract different content types', () {
       final content = ContentFormatter.extractSpecificContent(sampleHtml);
-      
+
       expect(content['headings'], isNotEmpty);
       expect(content['links'], isNotEmpty);
       expect(content['images'], isNotEmpty);
       expect(content['quotes'], isNotEmpty);
       expect(content['tables'], isNotEmpty);
-      
+
       expect(content['headings'], contains('Main Title'));
       expect(content['quotes'], contains('This is a quote'));
     });
 
     test('should handle HTML entities correctly', () {
-      const htmlWithEntities = '<p>Test &amp; example with &quot;quotes&quot; and &lt;brackets&gt;</p>';
+      const htmlWithEntities =
+          '<p>Test &amp; example with &quot;quotes&quot; and &lt;brackets&gt;</p>';
       final plainText = ContentFormatter.toPlainText(htmlWithEntities);
-      
+
       expect(plainText, contains('Test & example'));
       expect(plainText, contains('"quotes"'));
       expect(plainText, contains('<brackets>'));
@@ -136,14 +147,14 @@ void main() {
     test('should handle empty HTML gracefully', () {
       final plainText = ContentFormatter.toPlainText('');
       final markdown = ContentFormatter.toMarkdown('');
-      
+
       expect(plainText, isEmpty);
       expect(markdown, isEmpty);
     });
 
     test('removeClutter should remove navigation and ads', () {
       final cleaned = ContentFormatter.removeClutter(sampleHtml);
-      
+
       expect(cleaned, isNot(contains('<nav>')));
       expect(cleaned, isNot(contains('<header>')));
       expect(cleaned, isNot(contains('<footer>')));
@@ -153,10 +164,11 @@ void main() {
 
     test('extractReadableText should prioritize content-rich areas', () {
       final readable = ContentFormatter.extractReadableText(sampleHtml);
-      
+
       expect(readable, contains('Main Title'));
       expect(readable, contains('This is a bold and italic paragraph'));
-      expect(readable.length, greaterThan(50)); // Should extract substantial content
+      expect(readable.length,
+          greaterThan(50)); // Should extract substantial content
     });
   });
-} 
+}

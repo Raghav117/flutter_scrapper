@@ -5,34 +5,34 @@ library;
 class SmartContent {
   /// Page title
   final String? title;
-  
+
   /// Meta description or excerpt
   final String? description;
-  
+
   /// Main article/content text
   final String? content;
-  
+
   /// Author information
   final String? author;
-  
+
   /// Publication date
   final String? publishDate;
-  
+
   /// All images found on the page
   final List<String> images;
-  
+
   /// All links found on the page
   final List<String> links;
-  
+
   /// Email addresses found
   final List<String> emails;
-  
+
   /// Phone numbers found
   final List<String> phoneNumbers;
-  
+
   /// Prices found (for e-commerce)
   final List<String> prices;
-  
+
   /// Open Graph data
   final OpenGraphData? openGraph;
 
@@ -53,7 +53,7 @@ class SmartContent {
   @override
   String toString() {
     return 'SmartContent(title: $title, description: $description, '
-           'images: ${images.length}, links: ${links.length})';
+        'images: ${images.length}, links: ${links.length})';
   }
 }
 
@@ -155,7 +155,8 @@ class SmartExtractor {
     ];
 
     for (final pattern in strategies) {
-      final match = RegExp(pattern, caseSensitive: false, dotAll: true).firstMatch(html);
+      final match =
+          RegExp(pattern, caseSensitive: false, dotAll: true).firstMatch(html);
       if (match != null) {
         final content = _cleanText(match.group(1) ?? '');
         if (content.length > 100) return content;
@@ -219,7 +220,7 @@ class SmartExtractor {
         }
       }
     }
-    
+
     return images.toSet().toList(); // Remove duplicates
   }
 
@@ -227,7 +228,7 @@ class SmartExtractor {
   static List<String> extractLinks(String html) {
     final links = <String>[];
     final pattern = r'<a[^>]*href=[\"\x27]([^\"\x27]*)[\"\x27]';
-    
+
     final matches = RegExp(pattern, caseSensitive: false).allMatches(html);
     for (final match in matches) {
       final link = match.group(1);
@@ -235,7 +236,7 @@ class SmartExtractor {
         links.add(link);
       }
     }
-    
+
     return links.toSet().toList();
   }
 
@@ -243,13 +244,13 @@ class SmartExtractor {
   static List<String> extractEmails(String html) {
     final emails = <String>[];
     final pattern = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b';
-    
+
     final matches = RegExp(pattern).allMatches(html);
     for (final match in matches) {
       final email = match.group(0);
       if (email != null) emails.add(email);
     }
-    
+
     return emails.toSet().toList();
   }
 
@@ -260,7 +261,7 @@ class SmartExtractor {
       r'\+?1?[-.\s]?\(?(\d{3})\)?[-.\s]?(\d{3})[-.\s]?(\d{4})', // US format
       r'\+?(\d{1,4})[-.\s]?(\d{1,4})[-.\s]?(\d{1,4})[-.\s]?(\d{1,4})', // International
     ];
-    
+
     for (final pattern in patterns) {
       final matches = RegExp(pattern).allMatches(html);
       for (final match in matches) {
@@ -270,7 +271,7 @@ class SmartExtractor {
         }
       }
     }
-    
+
     return phones.toSet().toList();
   }
 
@@ -283,7 +284,7 @@ class SmartExtractor {
       r'Price:\s*\$?(\d+(?:,\d{3})*(?:\.\d{2})?)', // Price: $123.45
       r'<[^>]*class=[\"\x27][^\"\x27]*price[^\"\x27]*[\"\x27][^>]*>[^\\$]*\\\$([^<]*)<', // Class-based price
     ];
-    
+
     for (final pattern in patterns) {
       final matches = RegExp(pattern, caseSensitive: false).allMatches(html);
       for (final match in matches) {
@@ -293,14 +294,15 @@ class SmartExtractor {
         }
       }
     }
-    
+
     return prices.toSet().toList();
   }
 
   /// Extract Open Graph metadata
   static OpenGraphData? extractOpenGraph(String html) {
     String? getOgContent(String property) {
-      final pattern = '<meta[^>]*property=[\"\x27]og:$property[\"\x27][^>]*content=[\"\x27]([^\"\x27]*)[\"\x27]';
+      final pattern =
+          '<meta[^>]*property=[\"\x27]og:$property[\"\x27][^>]*content=[\"\x27]([^\"\x27]*)[\"\x27]';
       final match = RegExp(pattern, caseSensitive: false).firstMatch(html);
       return match?.group(1);
     }
@@ -322,7 +324,7 @@ class SmartExtractor {
         siteName: siteName,
       );
     }
-    
+
     return null;
   }
 
@@ -330,7 +332,7 @@ class SmartExtractor {
   static String _cleanText(String text) {
     // Remove HTML tags
     String cleaned = text.replaceAll(RegExp(r'<[^>]*>'), '');
-    
+
     // Decode HTML entities
     cleaned = cleaned
         .replaceAll('&amp;', '&')
@@ -342,10 +344,10 @@ class SmartExtractor {
         .replaceAll('&copy;', '©')
         .replaceAll('&reg;', '®')
         .replaceAll('&trade;', '™');
-    
+
     // Clean up whitespace
     cleaned = cleaned.replaceAll(RegExp(r'\s+'), ' ').trim();
-    
+
     return cleaned;
   }
-} 
+}

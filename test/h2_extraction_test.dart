@@ -87,19 +87,20 @@ void main() {
     late TestMobileScraper scraper;
 
     setUp(() {
-      scraper = TestMobileScraper('https://test-castingdoor.com', castingDoorLikeHtml);
+      scraper = TestMobileScraper(
+          'https://test-castingdoor.com', castingDoorLikeHtml);
     });
 
     test('should extract all H2 tags from castingdoor-like structure', () {
       final h2Results = scraper.queryAll(tag: 'h2');
-      
+
       print('\n🎯 === H2 TAG EXTRACTION RESULTS ===');
       print('📊 Total H2 tags found: ${h2Results.length}');
       print('📝 H2 tag contents:');
       for (int i = 0; i < h2Results.length; i++) {
         print('  ${i + 1}. "${h2Results[i]}"');
       }
-      
+
       // Verify expected H2 tags are found
       expect(h2Results.length, equals(6));
       expect(h2Results, contains('Artist Categories'));
@@ -121,24 +122,27 @@ void main() {
       </body>
       </html>
       ''';
-      
-      final classBasedScraper = TestMobileScraper('https://test.com', htmlWithClasses);
-      final sectionTitles = classBasedScraper.queryAll(tag: 'h2', className: 'section-title');
-      
+
+      final classBasedScraper =
+          TestMobileScraper('https://test.com', htmlWithClasses);
+      final sectionTitles =
+          classBasedScraper.queryAll(tag: 'h2', className: 'section-title');
+
       print('\n🎯 === CLASS-BASED H2 EXTRACTION ===');
       print('📊 H2 tags with "section-title" class: ${sectionTitles.length}');
       for (final title in sectionTitles) {
         print('  • "$title"');
       }
-      
+
       expect(sectionTitles.length, equals(3));
       expect(sectionTitles, contains('Main Categories'));
       expect(sectionTitles, contains('Sub Categories'));
     });
 
-    test('should demonstrate smart content extraction on castingdoor-like page', () {
+    test('should demonstrate smart content extraction on castingdoor-like page',
+        () {
       final smartContent = scraper.extractSmartContent();
-      
+
       print('\n🧠 === SMART CONTENT EXTRACTION ===');
       print('📰 Title: "${smartContent.title}"');
       print('📄 Description: "${smartContent.description}"');
@@ -146,7 +150,7 @@ void main() {
       print('🖼️ Images found: ${smartContent.images.length}');
       print('🔗 Links found: ${smartContent.links.length}');
       print('📧 Emails found: ${smartContent.emails.length}');
-      
+
       // Verify smart extraction works
       expect(smartContent.title, equals('Castingdoor - Artist Platform'));
       expect(smartContent.description, contains('Connect with artists'));
@@ -157,26 +161,27 @@ void main() {
     test('should extract content using regex patterns', () {
       // Extract artist names using regex
       final artistNames = scraper.queryWithRegex(
-        pattern: r'([A-Z][a-z]+ [A-Z][a-z]+) - (Actor|Singer|Dancer|Model|Voice Artist)'
-      );
-      
+          pattern:
+              r'([A-Z][a-z]+ [A-Z][a-z]+) - (Actor|Singer|Dancer|Model|Voice Artist)');
+
       print('\n🔍 === REGEX EXTRACTION ===');
       print('🎭 Artist entries found: ${artistNames.length}');
       for (final artist in artistNames) {
         print('  • "$artist"');
       }
-      
+
       expect(artistNames.length, greaterThan(0));
     });
 
     test('should format content to markdown', () {
       final markdown = scraper.toMarkdown();
-      
+
       print('\n📝 === MARKDOWN CONVERSION ===');
       print('📄 Markdown length: ${markdown.length} characters');
       print('📝 First 200 characters:');
-      print('"${markdown.length > 200 ? markdown.substring(0, 200) + '...' : markdown}"');
-      
+      print(
+          '"${markdown.length > 200 ? markdown.substring(0, 200) + '...' : markdown}"');
+
       // Verify H2 tags are converted to markdown headers
       expect(markdown, contains('## Artist Categories'));
       expect(markdown, contains('## Top Artists'));
@@ -187,13 +192,14 @@ void main() {
       final wordCount = scraper.getWordCount();
       final readingTime = scraper.estimateReadingTime();
       final plainText = scraper.toPlainText();
-      
+
       print('\n📊 === CONTENT ANALYSIS ===');
       print('📖 Word count: $wordCount');
-      print('⏱️ Reading time: ${readingTime.inMinutes} min ${readingTime.inSeconds % 60} sec');
+      print(
+          '⏱️ Reading time: ${readingTime.inMinutes} min ${readingTime.inSeconds % 60} sec');
       print('📄 Plain text length: ${plainText.length} characters');
       print('📝 First line of plain text: "${plainText.split('\n').first}"');
-      
+
       expect(wordCount, greaterThan(0));
       expect(readingTime.inSeconds, greaterThan(0));
     });
@@ -205,15 +211,15 @@ class TestMobileScraper extends MobileScraper {
   TestMobileScraper(String url, String htmlContent) : super(url: url) {
     _htmlContent = htmlContent;
   }
-  
+
   String? _htmlContent;
-  
+
   @override
   String? get rawHtml => _htmlContent;
-  
+
   @override
   bool get isLoaded => _htmlContent != null;
-  
+
   @override
   List<String> queryAll({
     required String tag,
@@ -223,14 +229,14 @@ class TestMobileScraper extends MobileScraper {
     if (_htmlContent == null) {
       throw ScraperNotInitializedException();
     }
-    
+
     try {
       List<String> results = [];
       String pattern = _buildTagPattern(tag, className: className, id: id);
-      
+
       RegExp regex = RegExp(pattern, caseSensitive: false, dotAll: true);
       Iterable<RegExpMatch> matches = regex.allMatches(_htmlContent!);
-      
+
       for (RegExpMatch match in matches) {
         String? content = match.group(1);
         if (content != null) {
@@ -240,13 +246,14 @@ class TestMobileScraper extends MobileScraper {
           }
         }
       }
-      
+
       return results;
     } catch (e) {
-      throw ParseException('Failed to parse HTML with tag pattern', _htmlContent, e);
+      throw ParseException(
+          'Failed to parse HTML with tag pattern', _htmlContent, e);
     }
   }
-  
+
   @override
   List<String> queryWithRegex({
     required String pattern,
@@ -255,12 +262,12 @@ class TestMobileScraper extends MobileScraper {
     if (_htmlContent == null) {
       throw ScraperNotInitializedException();
     }
-    
+
     try {
       List<String> results = [];
       RegExp regex = RegExp(pattern, caseSensitive: false, dotAll: true);
       Iterable<RegExpMatch> matches = regex.allMatches(_htmlContent!);
-      
+
       for (RegExpMatch match in matches) {
         String? content = match.group(group);
         if (content != null) {
@@ -270,10 +277,11 @@ class TestMobileScraper extends MobileScraper {
           }
         }
       }
-      
+
       return results;
     } catch (e) {
-      throw ParseException('Failed to parse HTML with regex pattern: $pattern', _htmlContent, e);
+      throw ParseException(
+          'Failed to parse HTML with regex pattern: $pattern', _htmlContent, e);
     }
   }
 
@@ -310,28 +318,30 @@ class TestMobileScraper extends MobileScraper {
   @override
   Duration estimateReadingTime({int wordsPerMinute = 200}) {
     final plainText = toPlainText();
-    return ContentFormatter.estimateReadingTime(plainText, wordsPerMinute: wordsPerMinute);
+    return ContentFormatter.estimateReadingTime(plainText,
+        wordsPerMinute: wordsPerMinute);
   }
-  
+
   // Private helper methods
   String _buildTagPattern(String tag, {String? className, String? id}) {
     String attributePattern = '';
-    
+
     if (className != null) {
-      attributePattern += '(?=.*class=["\'](?:[^"\']*\\s)?${RegExp.escape(className)}(?:\\s[^"\']*)?["\'])';
+      attributePattern +=
+          '(?=.*class=["\'](?:[^"\']*\\s)?${RegExp.escape(className)}(?:\\s[^"\']*)?["\'])';
     }
-    
+
     if (id != null) {
       attributePattern += '(?=.*id=["\']${RegExp.escape(id)}["\'])';
     }
-    
+
     return '<${RegExp.escape(tag)}$attributePattern[^>]*>(.*?)<\\/${RegExp.escape(tag)}>';
   }
-  
+
   String _cleanHtmlContent(String content) {
     // Remove HTML tags
     String cleaned = content.replaceAll(RegExp(r'<[^>]*>'), '');
-    
+
     // Decode common HTML entities
     cleaned = cleaned
         .replaceAll('&amp;', '&')
@@ -343,10 +353,10 @@ class TestMobileScraper extends MobileScraper {
         .replaceAll('&copy;', '©')
         .replaceAll('&reg;', '®')
         .replaceAll('&trade;', '™');
-    
+
     // Clean up whitespace
     cleaned = cleaned.replaceAll(RegExp(r'\s+'), ' ').trim();
-    
+
     return cleaned;
   }
-} 
+}

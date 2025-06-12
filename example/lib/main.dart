@@ -29,7 +29,8 @@ class ScrapingExample extends StatefulWidget {
 }
 
 class _ScrapingExampleState extends State<ScrapingExample> {
-  final _urlController = TextEditingController(text: 'https://httpbin.org/html');
+  final _urlController =
+      TextEditingController(text: 'https://httpbin.org/html');
   final _results = <String>[];
   bool _loading = false;
   String? _error;
@@ -168,7 +169,8 @@ class _ScrapingExampleState extends State<ScrapingExample> {
                               final result = _results[index];
                               if (result.startsWith('===')) {
                                 return Padding(
-                                  padding: const EdgeInsets.symmetric(vertical: 8),
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 8),
                                   child: Text(
                                     result,
                                     style: const TextStyle(
@@ -179,7 +181,8 @@ class _ScrapingExampleState extends State<ScrapingExample> {
                                 );
                               }
                               return Padding(
-                                padding: const EdgeInsets.symmetric(vertical: 2),
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 2),
                                 child: Text(result),
                               );
                             },
@@ -191,4 +194,4 @@ class _ScrapingExampleState extends State<ScrapingExample> {
       ),
     );
   }
-} 
+}

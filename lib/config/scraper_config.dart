@@ -2,25 +2,25 @@
 class ScraperConfig {
   /// Request timeout duration (default: 30 seconds)
   final Duration timeout;
-  
+
   /// Maximum content size in bytes (default: 10MB)
   final int maxContentSize;
-  
+
   /// Custom headers to include in requests
   final Map<String, String> headers;
-  
+
   /// User agent string
   final String userAgent;
-  
+
   /// Whether to follow redirects (default: true)
   final bool followRedirects;
-  
+
   /// Maximum number of redirects to follow (default: 5)
   final int maxRedirects;
-  
+
   /// Whether to verify SSL certificates (default: true)
   final bool verifySSL;
-  
+
   /// Request retry configuration
   final RetryConfig retryConfig;
 
@@ -64,7 +64,7 @@ class ScraperConfig {
   @override
   String toString() {
     return 'ScraperConfig(timeout: $timeout, maxContentSize: $maxContentSize, '
-           'followRedirects: $followRedirects, maxRedirects: $maxRedirects)';
+        'followRedirects: $followRedirects, maxRedirects: $maxRedirects)';
   }
 }
 
@@ -72,19 +72,19 @@ class ScraperConfig {
 class RetryConfig {
   /// Whether to enable retries (default: true)
   final bool enabled;
-  
+
   /// Maximum number of retry attempts (default: 3)
   final int maxAttempts;
-  
+
   /// Initial delay between retries (default: 1 second)
   final Duration initialDelay;
-  
+
   /// Multiplier for exponential backoff (default: 2.0)
   final double backoffMultiplier;
-  
+
   /// Maximum delay between retries (default: 10 seconds)
   final Duration maxDelay;
-  
+
   /// HTTP status codes that should trigger a retry
   final Set<int> retryableStatusCodes;
 
@@ -100,18 +100,18 @@ class RetryConfig {
   /// Calculate delay for a given retry attempt
   Duration getDelayForAttempt(int attempt) {
     if (attempt <= 0) return Duration.zero;
-    
+
     final delay = Duration(
-      milliseconds: (initialDelay.inMilliseconds * 
-                    (backoffMultiplier * attempt)).round(),
+      milliseconds:
+          (initialDelay.inMilliseconds * (backoffMultiplier * attempt)).round(),
     );
-    
+
     return delay > maxDelay ? maxDelay : delay;
   }
 
   @override
   String toString() {
     return 'RetryConfig(enabled: $enabled, maxAttempts: $maxAttempts, '
-           'initialDelay: $initialDelay, backoffMultiplier: $backoffMultiplier)';
+        'initialDelay: $initialDelay, backoffMultiplier: $backoffMultiplier)';
   }
-} 
+}

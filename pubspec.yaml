@@ -1,5 +1,5 @@
 name: flutter_scrapper
-description: Flutter Scrapper - A lightweight HTML scraper designed specifically for Flutter mobile (Android/iOS) apps. Easily fetch and parse text content from public websites — no backend, no heavy dependencies.
+description: A lightweight HTML scraper for Flutter mobile apps. Easily fetch and parse text content from public websites.
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 # publish_to: 'none' # Remove this line if you wish to publish to pub.dev
@@ -16,10 +16,8 @@ description: Flutter Scrapper - A lightweight HTML scraper designed specifically
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
 # In Windows, build-name is used as the major, minor, and patch parts
 # of the product and file versions while build-number is used as the build suffix.
-version: 0.1.0
+version: 1.0.0
 repository: https://github.com/raghav117/flutter_scrapper
-issue_tracker: https://github.com/raghav117/flutter_scrapper/issues
-documentation: https://pub.dev/documentation/flutter_scrapper
 homepage: https://github.com/raghav117/flutter_scrapper
 
 environment:

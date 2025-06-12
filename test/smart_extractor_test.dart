@@ -30,7 +30,7 @@ void main() {
 
     test('extractAll should extract all content types', () {
       final result = SmartExtractor.extractAll(sampleHtml);
-      
+
       expect(result.title, isNotNull);
       expect(result.description, isNotNull);
       expect(result.images.length, greaterThan(0));
@@ -55,7 +55,7 @@ void main() {
       <body><h1>Header Title</h1></body>
       </html>
       ''';
-      
+
       final title = SmartExtractor.extractTitle(htmlWithoutTitle);
       expect(title, equals('OG Fallback Title'));
     });
@@ -115,9 +115,10 @@ void main() {
     });
 
     test('should clean HTML entities', () {
-      const htmlWithEntities = '<title>Test &amp; Title with &quot;quotes&quot;</title>';
+      const htmlWithEntities =
+          '<title>Test &amp; Title with &quot;quotes&quot;</title>';
       final title = SmartExtractor.extractTitle(htmlWithEntities);
       expect(title, equals('Test & Title with "quotes"'));
     });
   });
-} 
+}

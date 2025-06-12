@@ -108,12 +108,13 @@ class _ScraperScreenState extends State<ScraperScreen> {
                   onRegexScrape: () => _performRegexScrape(viewModel),
                 ),
                 const SizedBox(height: 16),
-                
+
                 // Results section
                 Expanded(
                   child: ResultsDisplay(
                     result: viewModel.currentResult,
-                    errorMessage: viewModel.hasError ? viewModel.errorMessage : null,
+                    errorMessage:
+                        viewModel.hasError ? viewModel.errorMessage : null,
                     isLoading: viewModel.isLoading,
                     onClear: viewModel.clearResults,
                   ),
@@ -132,8 +133,8 @@ class _ScraperScreenState extends State<ScraperScreen> {
     viewModel.scrapeByTag(
       url: _urlController.text.trim(),
       tag: _tagController.text.trim(),
-      className: _classController.text.trim().isEmpty 
-          ? null 
+      className: _classController.text.trim().isEmpty
+          ? null
           : _classController.text.trim(),
     );
   }
@@ -224,7 +225,8 @@ class _ScraperScreenState extends State<ScraperScreen> {
                         ),
                         trailing: result.isSuccess
                             ? Text('${result.data.length}')
-                            : const Icon(Icons.error_outline, color: Colors.red),
+                            : const Icon(Icons.error_outline,
+                                color: Colors.red),
                       ),
                     );
                   },
@@ -262,4 +264,4 @@ class _ScraperScreenState extends State<ScraperScreen> {
       return '${difference.inDays}d ago';
     }
   }
-} 
+}

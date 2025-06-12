@@ -1,7 +1,7 @@
 /// Flutter Scrapper - A lightweight HTML scraper designed specifically for Flutter mobile (Android/iOS) apps.
-/// 
+///
 /// This library provides a simple way to fetch and parse text content from public websites
-/// without requiring a backend or heavy dependencies. It works 100% on-device and is 
+/// without requiring a backend or heavy dependencies. It works 100% on-device and is
 /// optimized for mobile platforms only.
 library;
 
@@ -28,4 +28,4 @@ export 'models/scrape_result.dart';
 export 'models/scrape_request.dart';
 
 // ViewModels (for apps that want to use the MVVM pattern)
-export 'viewmodels/scraper_viewmodel.dart'; 
+export 'viewmodels/scraper_viewmodel.dart';

@@ -34,11 +34,11 @@ class _ScraperFormState extends State<ScraperForm> {
         // URL Input
         _buildUrlInput(),
         const SizedBox(height: 16),
-        
+
         // Tag-based scraping section
         _buildTagBasedSection(),
         const SizedBox(height: 16),
-        
+
         // Regex-based scraping section
         _buildRegexBasedSection(),
       ],
@@ -109,7 +109,7 @@ class _ScraperFormState extends State<ScraperForm> {
               width: double.infinity,
               child: ElevatedButton.icon(
                 onPressed: widget.isLoading ? null : widget.onTagScrape,
-                icon: widget.isLoading 
+                icon: widget.isLoading
                     ? const SizedBox(
                         width: 16,
                         height: 16,
@@ -163,7 +163,7 @@ class _ScraperFormState extends State<ScraperForm> {
               width: double.infinity,
               child: ElevatedButton.icon(
                 onPressed: widget.isLoading ? null : widget.onRegexScrape,
-                icon: widget.isLoading 
+                icon: widget.isLoading
                     ? const SizedBox(
                         width: 16,
                         height: 16,
@@ -182,4 +182,4 @@ class _ScraperFormState extends State<ScraperForm> {
       ),
     );
   }
-} 
+}
