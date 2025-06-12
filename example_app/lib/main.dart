@@ -90,7 +90,7 @@ class _ScrapingDemoState extends State<ScrapingDemo> {
           ...headings.take(3).map((h) => '  • $h'),
           '',
           '📄 Paragraphs (${paragraphs.length}):',
-          ...paragraphs.take(2).map((p) => '  • ${p.length > 100 ? p.substring(0, 100)}...' : p}'),
+          ...paragraphs.take(2).map((p) => '  • ${p.length > 100 ? "${p.substring(0, 100)}..." : p}'),
           '',
           '📊 === CONTENT ANALYSIS ===',
           '📖 Word Count: $wordCount',

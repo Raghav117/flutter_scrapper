@@ -59,21 +59,52 @@ class ContentFormatter {
         caseSensitive: false, dotAll: true), '');
     
     // Convert headers
-    markdown = markdown
-        .replaceAll(RegExp(r'<h1[^>]*>(.*?)</h1>', caseSensitive: false, dotAll: true), '# \$1\n\n')
-        .replaceAll(RegExp(r'<h2[^>]*>(.*?)</h2>', caseSensitive: false, dotAll: true), '## \$1\n\n')
-        .replaceAll(RegExp(r'<h3[^>]*>(.*?)</h3>', caseSensitive: false, dotAll: true), '### \$1\n\n')
-        .replaceAll(RegExp(r'<h4[^>]*>(.*?)</h4>', caseSensitive: false, dotAll: true), '#### \$1\n\n')
-        .replaceAll(RegExp(r'<h5[^>]*>(.*?)</h5>', caseSensitive: false, dotAll: true), '##### \$1\n\n')
-        .replaceAll(RegExp(r'<h6[^>]*>(.*?)</h6>', caseSensitive: false, dotAll: true), '###### \$1\n\n');
+    markdown = markdown.replaceAllMapped(
+      RegExp(r'<h1[^>]*>(.*?)</h1>', caseSensitive: false, dotAll: true),
+      (match) => '# ${match.group(1)}\n\n',
+    );
+    markdown = markdown.replaceAllMapped(
+      RegExp(r'<h2[^>]*>(.*?)</h2>', caseSensitive: false, dotAll: true),
+      (match) => '## ${match.group(1)}\n\n',
+    );
+    markdown = markdown.replaceAllMapped(
+      RegExp(r'<h3[^>]*>(.*?)</h3>', caseSensitive: false, dotAll: true),
+      (match) => '### ${match.group(1)}\n\n',
+    );
+    markdown = markdown.replaceAllMapped(
+      RegExp(r'<h4[^>]*>(.*?)</h4>', caseSensitive: false, dotAll: true),
+      (match) => '#### ${match.group(1)}\n\n',
+    );
+    markdown = markdown.replaceAllMapped(
+      RegExp(r'<h5[^>]*>(.*?)</h5>', caseSensitive: false, dotAll: true),
+      (match) => '##### ${match.group(1)}\n\n',
+    );
+    markdown = markdown.replaceAllMapped(
+      RegExp(r'<h6[^>]*>(.*?)</h6>', caseSensitive: false, dotAll: true),
+      (match) => '###### ${match.group(1)}\n\n',
+    );
     
     // Convert text formatting
-    markdown = markdown
-        .replaceAll(RegExp(r'<strong[^>]*>(.*?)</strong>', caseSensitive: false, dotAll: true), '**\$1**')
-        .replaceAll(RegExp(r'<b[^>]*>(.*?)</b>', caseSensitive: false, dotAll: true), '**\$1**')
-        .replaceAll(RegExp(r'<em[^>]*>(.*?)</em>', caseSensitive: false, dotAll: true), '*\$1*')
-        .replaceAll(RegExp(r'<i[^>]*>(.*?)</i>', caseSensitive: false, dotAll: true), '*\$1*')
-        .replaceAll(RegExp(r'<code[^>]*>(.*?)</code>', caseSensitive: false, dotAll: true), '`\$1`');
+    markdown = markdown.replaceAllMapped(
+      RegExp(r'<strong[^>]*>(.*?)</strong>', caseSensitive: false, dotAll: true),
+      (match) => '**${match.group(1)}**',
+    );
+    markdown = markdown.replaceAllMapped(
+      RegExp(r'<b[^>]*>(.*?)</b>', caseSensitive: false, dotAll: true),
+      (match) => '**${match.group(1)}**',
+    );
+    markdown = markdown.replaceAllMapped(
+      RegExp(r'<em[^>]*>(.*?)</em>', caseSensitive: false, dotAll: true),
+      (match) => '*${match.group(1)}*',
+    );
+    markdown = markdown.replaceAllMapped(
+      RegExp(r'<i[^>]*>(.*?)</i>', caseSensitive: false, dotAll: true),
+      (match) => '*${match.group(1)}*',
+    );
+    markdown = markdown.replaceAllMapped(
+      RegExp(r'<code[^>]*>(.*?)</code>', caseSensitive: false, dotAll: true),
+      (match) => '`${match.group(1)}`',
+    );
     
     // Convert links
     markdown = markdown.replaceAllMapped(
@@ -94,18 +125,23 @@ class ContentFormatter {
         .replaceAll(RegExp(r'<ul[^>]*>', caseSensitive: false), '')
         .replaceAll(RegExp(r'</ul>', caseSensitive: false), '\n')
         .replaceAll(RegExp(r'<ol[^>]*>', caseSensitive: false), '')
-        .replaceAll(RegExp(r'</ol>', caseSensitive: false), '\n')
-        .replaceAll(RegExp(r'<li[^>]*>(.*?)</li>', caseSensitive: false, dotAll: true), '- \$1\n');
+        .replaceAll(RegExp(r'</ol>', caseSensitive: false), '\n');
+    markdown = markdown.replaceAllMapped(
+      RegExp(r'<li[^>]*>(.*?)</li>', caseSensitive: false, dotAll: true),
+      (match) => '- ${match.group(1)}\n',
+    );
     
     // Convert paragraphs
-    markdown = markdown
-        .replaceAll(RegExp(r'<p[^>]*>(.*?)</p>', caseSensitive: false, dotAll: true), '\$1\n\n')
-        .replaceAll(RegExp(r'<br\s*/?>', caseSensitive: false), '\n');
+    markdown = markdown.replaceAllMapped(
+      RegExp(r'<p[^>]*>(.*?)</p>', caseSensitive: false, dotAll: true),
+      (match) => '${match.group(1)}\n\n',
+    );
+    markdown = markdown.replaceAll(RegExp(r'<br\s*/?>', caseSensitive: false), '\n');
     
     // Convert blockquotes
-    markdown = markdown.replaceAll(
-      RegExp(r'<blockquote[^>]*>(.*?)</blockquote>', caseSensitive: false, dotAll: true), 
-      '> \$1\n\n'
+    markdown = markdown.replaceAllMapped(
+      RegExp(r'<blockquote[^>]*>(.*?)</blockquote>', caseSensitive: false, dotAll: true),
+      (match) => '> ${match.group(1)}\n\n',
     );
     
     // Remove remaining HTML tags

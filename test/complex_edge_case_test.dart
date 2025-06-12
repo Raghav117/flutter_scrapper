@@ -149,7 +149,7 @@ void main() {
               <div class="member-contact">
                 <span class="email">sarah.johnson@advancedtech.com</span>
                 <span class="phone">+1-555-TECH-CEO (555-832-4236)</span>
-                <span class="linkedin">linkedin.com/in/sarah-johnson-ai</span>
+                <span class="linkedin">example.com/in/sarah-johnson-ai</span>
               </div>
             </div>
             
@@ -160,7 +160,7 @@ void main() {
               <div class="member-contact">
                 <span class="email">alex.chen@advancedtech.com</span>
                 <span class="phone">+1-555-BLOCK-CHAIN (555-256-2524)</span>
-                <span class="linkedin">linkedin.com/in/alex-chen-blockchain</span>
+                <span class="linkedin">example.com/in/alex-chen-blockchain</span>
               </div>
             </div>
           </div>
@@ -237,9 +237,9 @@ void main() {
             <a href="/investors">Investor Relations</a>
           </div>
           <div class="social-media">
-            <a href="https://twitter.com/advancedtech">Twitter</a>
-            <a href="https://linkedin.com/company/advanced-tech-solutions">LinkedIn</a>
-            <a href="https://github.com/advanced-tech-solutions">GitHub</a>
+            <a href="https://example.com/advancedtech">Twitter</a>
+            <a href="https://example.com/company/advanced-tech-solutions">LinkedIn</a>
+            <a href="https://example.com/advanced-tech-solutions">GitHub</a>
           </div>
         </div>
       </footer>
@@ -257,8 +257,8 @@ void main() {
       test('should extract complex pricing information using advanced regex', () {
         // Complex regex for various price formats
         final pricePatterns = [
-          r'\\\$([0-9,]+(?:\.[0-9]{2})?)\s*(?:/month|/year)?',  // Standard prices
-          r'\\\$([0-9,]+(?:\.[0-9]{2})?)\s*-\s*\\\$([0-9,]+(?:\.[0-9]{2})?)', // Price ranges
+          r'\$([0-9,]+(?:\.[0-9]{2})?)\s*(?:/month|/year)?',  // Standard prices (fixed escaping)
+          r'\$([0-9,]+(?:\.[0-9]{2})?)\s*-\s*\$([0-9,]+(?:\.[0-9]{2})?)', // Price ranges (fixed escaping)
           r'([0-9,]+(?:\.[0-9]{2})?)\s*million', // Million dollar amounts
           r'ROI\s+of\s+([0-9]+)%', // ROI percentages
           r'([0-9]+(?:\.[0-9]+)?)%\s+accuracy', // Accuracy percentages
@@ -274,7 +274,7 @@ void main() {
         
         // Test complex price range extraction
         final priceRanges = scraper.queryWithRegex(
-          pattern: r'\\\$([0-9,]+(?:\.[0-9]{2})?)\s*-\s*\\\$([0-9,]+(?:\.[0-9]{2})?)',
+          pattern: r'\$([0-9,]+(?:\.[0-9]{2})?)\s*-\s*\$([0-9,]+(?:\.[0-9]{2})?)',
           group: 0
         );
         print('Price ranges found: ${priceRanges.join(", ")}');
@@ -315,7 +315,7 @@ void main() {
       test('should extract cryptocurrency and financial data', () {
         // Crypto price pattern
         final cryptoPrices = scraper.queryWithRegex(
-          pattern: r'([A-Z]{3,4}):\s*\\\$([0-9,]+(?:\.[0-9]{2,8})?)'
+          pattern: r'([A-Z]{3,4}):\s*\$([0-9,]+(?:\.[0-9]{2,8})?)'
         );
         print('\n💎 === CRYPTOCURRENCY EXTRACTION ===');
         print('Crypto prices: ${cryptoPrices.join(", ")}');
@@ -323,13 +323,13 @@ void main() {
         
         // Financial metrics
         final financialMetrics = scraper.queryWithRegex(
-          pattern: r'(TVL|ROI|revenue)\s+of\s+\\\$?([0-9,]+(?:\.[0-9]+)?[MBK]?)'
+          pattern: r'(TVL|ROI|revenue)\s+of\s+\$?([0-9,]+(?:\.[0-9]+)?[MBK]?)'
         );
         print('Financial metrics: ${financialMetrics.join(", ")}');
         
         // Project values
         final projectValues = scraper.queryWithRegex(
-          pattern: r'\\\$([0-9,]+(?:\.[0-9]+)?[MBK]?)\s+(?:project|implementation|grant)'
+          pattern: r'\$([0-9,]+(?:\.[0-9]+)?[MBK]?)\s+(?:project|implementation|grant)'
         );
         print('Project values: ${projectValues.join(", ")}');
         expect(projectValues.length, greaterThanOrEqualTo(3));
@@ -452,7 +452,7 @@ void main() {
         final scraper = TestMobileScraper('https://test.com', complexWebsiteHtml);
         
         // Extremely complex regex that might cause performance issues
-        final complexPattern = r'(?:(?:[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})|(?:\+1-[0-9]{3}-[A-Z-]+)|(?:\\\$[0-9,]+(?:\.[0-9]{2})?)|(?:[0-9]+(?:\.[0-9]+)?%)|(?:CEO|CTO|CFO)|(?:PhD|MS|MD)|(?:🚀|🤖|💰|📊|🔗))';
+        final complexPattern = r'(?:(?:[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})|(?:\+1-[0-9]{3}-[A-Z-]+)|(?:\$[0-9,]+(?:\.[0-9]{2})?)|(?:[0-9]+(?:\.[0-9]+)?%)|(?:CEO|CTO|CFO)|(?:PhD|MS|MD)|(?:🚀|🤖|💰|📊|🔗))';
         
         print('\n🔥 === STRESS TEST WITH COMPLEX REGEX ===');
         
@@ -536,7 +536,7 @@ void main() {
         final allH2 = scraper.queryAll(tag: 'h2');
         final allH3 = scraper.queryAll(tag: 'h3');
         final allEmails = scraper.queryWithRegex(pattern: r'([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})');
-        final allPrices = scraper.queryWithRegex(pattern: r'\\\$([0-9,]+(?:\.[0-9]{2})?)');
+        final allPrices = scraper.queryWithRegex(pattern: r'\$([0-9,]+(?:\.[0-9]{2})?)');
         final markdown = scraper.toMarkdown();
         final plainText = scraper.toPlainText();
         final wordCount = scraper.getWordCount();

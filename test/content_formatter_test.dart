@@ -56,7 +56,7 @@ void main() {
       expect(markdown, contains('**bold**'));
       expect(markdown, contains('*italic*'));
       expect(markdown, contains('`code`'));
-      expect(markdown, contains('- List item 1') || contains('• List item 1'));
+      expect(markdown, anyOf(contains('- List item 1'), contains('• List item 1')));
       expect(markdown, contains('[Example Link](https://example.com)'));
       expect(markdown, contains('![Test Image](https://example.com/image.jpg)'));
       expect(markdown, contains('> This is a quote'));

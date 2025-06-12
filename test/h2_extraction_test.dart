@@ -131,7 +131,7 @@ void main() {
         print('  • "$title"');
       }
       
-      expect(sectionTitles.length, equals(2));
+      expect(sectionTitles.length, equals(3));
       expect(sectionTitles, contains('Main Categories'));
       expect(sectionTitles, contains('Sub Categories'));
     });
